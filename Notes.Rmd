@@ -1,0 +1,995 @@
+---
+title: "Lecture Notes"
+output: 
+  html_document:
+    theme: journal
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 08/23: Review
+
+> Mean vs Median 
+
+  1. Mean and standard deviation: no resistance to Outlier but have relation with normal distribution.
+  2. Median and Quartile system: has resistance to Outlier but have no relation with normal distribution. 
+  3. Linear transformation doesn't change the shape of distribution.
+
+
+
+#### 3 elements for Scatter plot analysis
+
+> Form
+
+  1. shape(linear / nonlinear)
+  2. clusters (distribution of data, correlation)
+  3. Outlier(abnormal points)
+    
+> Correlation coefficients (r squared)
+  
+  1. If $coefficient > 0.4$, strong correlation.
+  
+  2. If $0.4 > coefficient > 0.2$, weak / mild correlation weak.
+  
+  3. If $0.2 > coefficient$, no correlation between the two variables. 
+    
+> Direction
+  
+  1. positive or negative.
+
+
+
+## 08/31: Constant Model: Simplest Model
+
+> Features
+  
+  1. Contains only constants: y = c(constant) + error
+  2. Average of constant = average of predicted y.
+    
+> Notation
+  
+  1. $\bar{y}$ = mean of y
+  2. $\hat{y}$ = predicted y 
+    
+    
+> Residual
+  
+  1. Measures the error for each data point
+    - Specifically the distance between regression line and the observed value in the y direction.
+    
+  2. difference between y and predicted y
+    
+> Overall residuals
+  
+  1. Sum of all residuals: not often used because of the inability to distinguish over/under estimation.
+  
+  2. Sum Absolute deviations(MAE)
+  
+  3. Sum of squared roots (RMSE)
+    
+    
+## 09/07: Linear regression with one predictor 
+
+
+> Categorical parameter
+  
+  - Only one categorical predictor in the model
+    - For example, predict Lego price based on themes.
+    
+  - Can analyze using 2 sample t test
+    - Compare the mean of the samples categorized by the particular parameter. 
+    - If the mean results as the same, than the parameter cannot predict well. 
+  
+> Interpret t test
+  
+  - p-value: proportion of the sample's extremes with the assumption that null hypothesis is true. 
+    
+  - Only reject null when p-value is small. (Typically 0.05)
+      
+    
+> Quantative parameter 
+
+  - Simple linear model: y = mx(slope) + b(intercept) + error
+  
+  - lm(): least square linear model. <span style="color: red;"> [Least accumulation of error squared.] </span> 
+    
+    - Format: lm(data, Y (response) ~ X(Predictors))
+  
+  - 5 elements to calculate
+  
+    1. mean of x and y (x bar and y bar)
+    
+    2. standard deviation (sd(x) and sd(y))
+    
+    3. correlation between x and y (cor(x, y))
+    
+    4. slope = correlation (sd y / sd x)
+  
+    5. Intercept = y bar - slope * x bar
+
+  - <span style="color: red;"> Linear transformation of x doesn't change standard deviation of y, nor the correlation. </span> 
+  
+
+> Condition to check for whether the model is 'good'
+
+  - Constant variance: variance of y is the same at each x (homoscedasticity)
+  
+    -  check with residual plot
+      
+    - vertical width of the residual plot should be the same across.
+  
+  - Zero mean: distribution of errors centered at 0.
+  
+    - lm() automatically satisfy this condition. 
+      
+    - Sum of squared errors is 0. 
+      
+    - Sum of raw residuals are 0 for simple linear regression. 
+    
+  - Linearity: y is a linear combination of x. 
+  
+    - use scatter plot to check whether the two variables display linear relationship. 
+    
+    - residual vs fitted value(predicted y)
+    
+  -  Normality: residuals are normally distributed.
+  
+    - Check for normal distribution. 
+  
+  -  Independence: no patterns among errors.
+  
+    - This condition is checked when collecting data. 
+  
+  
+## Mischellaneous Function
+
+> Invisible()
+
+  - return a temporarily invisible copy of an object.
+  
+  - used in function writing when attempting to hide values that are not assigned for the function. 
+
+> R Mardown Format
+
+  - *Italicized*
+  
+  - **Bold**
+  
+  - <span style="background-color: yellow;"> highlight  </span> (Background Color)
+  
+  - This is <span style="color: red;"> red text</span>. (Colored text only)
+  
+  - This is <u>underlined text</u>. (Underline texts)
+  
+  - This is <span style="color: green; font-weight: bold;">green and bold</span> text.
+  
+  - This is <u><span style="color: blue;">underlined and blue</span></u> text.
+  
+  - This is ~~strikethrough text~~. 
+
+> sd() & std()
+
+  - sd() is used in r under readr. [sd()]
+  - std() is used in python np. (np.std)
+      
+## 09/12: Simple linear Model analysis
+
+
+> Residual
+
+  - actual(observed) - predicted(estimated)
+
+  -  <span style="color: red;"> plot(residual ~ fitted value) </span> 
+  
+    - Check for constant variance / linearity
+  
+    - If the points are not distributed randomly (has pattern or scatter around one point), then the model doesn't satisfy linearity. 
+    
+  - For lm(), the sum of raw residuals is 0. 
+      
+
+> Check for normal distribution (normality of the model)
+
+  -  Normal Quartile plot
+  
+    - Scatter plot of residuals vs normal sample.
+    
+    - If results as a straight line, then the data is normal. 
+    
+    - qqnorm() plots data (empirical value)
+    
+    - qqline() adds a theoretical line to the plot. 
+      
+
+> Transformation to get to correct (better) model
+
+  - log, square root, exponential, power, reciprocal(1/x)
+  
+  - par(mfrow=c(2,2)) established formats for multiple plots output. 
+  
+  - curve() plots curved functions (non linear)
+  
+    - Must use (add = TRUE) to be included with the original plot. 
+  
+
+## 09/14: Transformations and residuals
+
+> Standardized residuals
+
+  - rstandard()
+  
+  - standardized residuals have mean = 0 and std = 1. (25, 95, 99.7)
+  
+    - outliers if std beyond $\pm$ 3.
+    
+    - mild if std beyond $\pm$ 2.
+    
+  
+    
+## 09/19 Model Diagnostics
+
+
+> Detecting Unusal Cases
+
+  - Leverage: (calculate how far the predictor is from the mean)
+  
+    - formula: \[ \frac{1}{n} + \frac{{(x - \bar{x})^2}}{{\sum_{i=1}^{n} (x_i - \bar{x})^2}} \]
+    
+    - Depend only on x (predictor)
+    
+    - sum of all leverage points equal to 2
+    
+    - consider extreme if \[ \text{leverage} > 2 \times \left(\frac{2}{n}\right) \quad \text{or} \quad \text{leverage} > 3 \times \left(\frac{2}{n}\right) \]
+
+    - average point should be around 2/n
+    
+    - Hatvalues in R
+    
+  
+  - standardize residual
+  
+  
+  - Cook's distance 
+  
+    - evaluate how much would the fit change if one data was removed
+    
+    - formula: \[ D = \frac{{(\text{std.residual})^2}}{{K + 1}} \cdot \frac{h}{{1 - h}}\]
+    
+    - k: number of predictors, h: leverage 
+    
+    - if $D > 0.5$(mild outlier) & $D > 1.0$ (extreme outlier)
+    
+    - cooks.distance()
+  
+
+> Deal with extreme residuals
+
+  - transformation
+  
+  - redo the analysis 
+  
+
+> Standardized vs Studentized
+
+  - Studentized standardization will remove the an unusual case. 
+  
+    - <span style="color: red;"> Studentized plots will not be affected by outliers in this case. </span> 
+    
+    - rstudent()
+    
+    - Great model when detecting outliers. 
+    
+    
+> Influence of data point
+
+  - Depend on how well the data match the model (trend)
+  
+  - how unusual the predictor value (x-axis)
+  
+  
+## 09/21 Inference 
+
+> Interpreting Summary Plot
+
+  - pr(>|t|): 
+  
+    - p-value
+    
+    - Probability of getting values as extreme as the outcome. 
+    
+    - significant/ have enough evidence to reject null hypothesis if less than 0.05.
+  
+  - t-value: \[ \frac{\text{coef}}{\text{std}} \]
+  
+  - df: degree of freedom
+  
+    - n - 2 (number of non-na observations minus 2)
+    
+    - n - k - 1 (k is the number of predictors)
+    
+  - Confidence Interval Calculation (1-a) level significance
+  
+    - $qt(1 - a/2, df)$
+    
+    - $confint(model, level(significance level, 0.95 for 95%))$
+    
+    - If the distribution doesn't contain 0, the slope is significant.
+    
+    - Upper/Lower Bound for intercept:
+    
+      - Intercept $\pm$ qt() * std.error
+
+> Confidence Interval
+      
+  - Confidence Interval for mean of  Y (accuracy purpose)
+  
+    - examines where is the true line for x / where is the average y for all with that x
+    
+    - $predict.lm(model, data, interval = "confidence")$
+    
+    - Indicates where the line is for specific y
+    
+  - Prediction Interval for Individual Y (prediction purposes with increasing random error)
+  
+    - examines where most Y's for that x
+    
+    - $predict.lm(model, data, interval = "prediction")$
+    
+    - Indicates what the model will predict for a new x.
+    
+> t - test for slope
+
+  - null hypothesis: slope is 0, the predictor should not be used to predict the Y.
+  
+  - if p-value is small, should reject null hypothesis. 
+  
+  - Alternate Hypothesis: slope is not 0, and the predictor is meaningful. 
+  
+  - Formula: estimate(prediction) / standard error
+    
+
+> Correlation 
+
+  - Test whether two variables have a linear relationship. 
+  
+  - cor( use = "complete.obs") to avoid observations with at least one NA. 
+  
+    - Correlation between y and linear transformation of x should remain unchanged 
+    
+    - The affect for ouutliers on a model will depend on the location of the outliers. 
+  
+  - cor.test() tests whether the correlation is 0. 
+  
+
+## Midterm 1 
+
+>Textbook
+
+  1. Quantitative variables can be used for arithmetic operations. (ZIP code are categorical)
+
+  2. Effect size: \[ \frac{\text{observed difference between two groups}}{\text{standard deviation}} \]
+
+  3. Model comes in two parts:
+
+    - The form of the equation (mx + b)
+  
+    - The conditions for error term: errors are independent with normal shape and constant standard deviation.
+    
+  4. Standard error of regression: $sqrt(SSE / (n-2))$
+
+    - How far individual cases might spread above or below the regression line.
+  
+
+
+
+## 09/28 Analysis of Variance
+
+> Variance
+
+  - Total Variance = variance from model + variance from error
+  
+  - Variation from model: predicted - mean
+  
+  - Variation from error: observed - predicted
+  
+> ANOVA and F-statistics
+
+  - MSModel:  \[ \frac{\text{SSModel(Sum of Squared Model)}}{1} \]
+  
+  - MSE: \[ \frac{\text{SSE (Sum of Squared Errors) }}{\text{n - 2}} \]
+  
+  - (F)Statistics = \[ \frac{\text{MSModel}}{\text{MSE}} \]
+  
+    - if the statistics is large, predictor is useful
+  
+    - Constant model should have the statistics around 1. 
+    
+    - Check whether the two variances are proportional to each other. 
+    
+    - If F statistics is large, the p-value is significant(small)
+    
+    - Also equals to squared of t-values
+    
+    - 1 - pf(Fstat, 1, n-2) [one minus area to the left]
+
+> R squared
+
+  - 1 - SSE(sum squared error)/SSTotal (sum squared total)
+  
+  - The smaller SSE is, the better model it is. 
+  
+  - 0 <= $r ^ 2$ <= 1
+    
+    - 0 (model explains no variability)
+    
+    - 1 (model explains every variability)
+    
+> All three tests have the same p-value 
+  
+  1. summary(model)
+  2. anova
+  3. cor.test(response, predictor))
+  4. All three models will be the same only for simple linear regression. 
+    
+## 10/03 Multiple Regression
+
+
+> Formula
+
+  - y = intercept + m1x1 + m2x2 + .... + error
+  - Has k predictors
+  - When interpreting multiple regression, fix all other predictors and only modify one predictor by one  unit to see the affect for that predictor on the model. 
+
+
+> T test
+
+  - For slope: assessing linear association with consideration for the other predictors as well. 
+    - summary() output for slope
+  
+  - For correlation: assessing the linear association between the particular predictor and response
+    - cor.test(predictor1, predictor2)
+  
+> Multicolinearity
+  
+  - When two or more predictors have strong association with each other.
+  - Problematic because one can replace the other, thus make the model unreliable.
+    - Regression coefficients and test will be difficult to interpret individually.
+    - One variable alone can work as well as many.
+
+> Detect Multicolinearity
+
+  - <span style="color: red;"> Variance Inflation Factor(VIF) </span>
+  
+    - 1 / (1 - $Ri ^ 2$)
+      - $R_i ^ 2$ is for predicting Xi with the other predictors
+      
+    - if VIF > 5, it implies $R^2$ for this predictor is over 80%
+    
+      - This predictor has strong association with the other predictors and can be replaced by other predictors.
+      
+      - The higher VIF, the stronger association between this particular variable with the other variables. 
+      
+## 10/05  Model Selection 
+
+> What to do if encounter Multicolinearity
+    
+  - Choose a better set of predictors.
+  - Eliminate redundancy.
+  - Combine predictors into a scale.
+  - Ignore individual coefficients.
+  - Predictions aren't necessarily worse if there exist multicolinearity, just hard to make conclusions. 
+
+> Predictor Selection Methods
+
+  - Investigate all subsets manually
+  - Backward elimination
+  - Forward selection
+  - Stepwise regression
+  
+> Determine best model using adjusted r ^ 2 
+
+  - \[ r^2 = 1 - \frac{SSE}{SSTotal} \]
+  
+    - The proportion of variations explained by the model divided by variations explained for combined. 
+  
+    - $r ^ 2$ will always increase as we have more predictors, thus will predicted the best model as the one with all predictors
+    
+    -   - adding a new predictor will decrease the SSE and thus
+increase the variability explained by the model
+    
+  - \[ R^2_{\text{adj}} = 1 - \frac{\frac{SSE}{n - k - 1}}{\frac{SSTotal}{n - 1}} \]
+  
+    - Unlike $R^2$, $R^2_{adj}$ takes account of the degree of freedom. 
+    
+    - Only take consideration of predictors in the reduced model. 
+    
+    - Using *regsubsets()*, determine the best model that has largest $R^2_{adj}$ and lowest Cp. 
+      
+      - Regsubsets() does all the model selections.
+    
+      - regsubsets(Bodyfat~., data = Dataset, nvmax=9, nbest=2) outputs the best two models for different number of predictors with maximum number 9. 
+  
+  - \[ Cp = \frac{SSE_m}{MSE_k} + 2(m + 1) - n \]
+  
+    - m: predictors in the current model
+    - Good set of predictors should have small number of $C_p$.
+    - Take consideration of both predictor in and outside of the model. 
+
+> Model Selection Method 1: All subsets
+
+  - For a model with k predictors, there will be $2^k - 1$ subsets excluding the empty model(constant model).
+  
+  - Pros: It ensures us to find the best model given certain criteria.
+  
+  - Cons: Lots of computation, thus this method is only useful when the predictors are small(computable). 
+  
+  - corrplot(cor(Dataset), type="upper"): displays visualization for correlations between variables in the data set if we want to use all variables as predictors. 
+      
+## 10/10
+
+> Backward Elimination Procedure
+  
+  - Start with full model (all predictors)
+  
+  - Calculate if the model will be better if some predictors are dropped.
+  
+  - Find least significant predictor and drop it. 
+  
+  - Repeat until no further improvements. 
+  
+> Backward Elimination Pros and Cons
+
+  - Pros
+
+    - Remove worst predictors early
+  
+    - Few models to consider and leaves only important ones
+  
+  - Cons
+    
+    - May exist multicolinearity 
+    
+    - Individual t-test may be unstable.
+  
+> Backward elimination algorithms
+
+  - Full = lm(Bodyfat~., data = BodyFat)
+  
+  - MSE = (summary(Full)$sigma)^2
+  
+  - step(Full, scale=MSE)
+  
+  - Notes:
+    - Started AIC = 10: all predictors  + none(if no predictors are dropped)
+    - The output will show the Cp if the predictor in the same row is dropped. 
+    - Thus, newer model will drop the predictor with lowest Cp. 
+    - AIC indicate which predictor is being dropped
+    - The procedure will stop when 'none' becomes the next best model. (indicates no further improvement)
+    
+> Forward Selection Procedure
+
+  - Start with constant model
+  - Check whether adding additional predictor improve the model
+  - Find the new most significant and include for the next model
+  - Repeat until no further improvements. 
+  
+> Forward Selection Steps
+
+  - none = lm(Bodyfat~1, data=BodyFat)
+  
+  - step(none, scope=list(upper=Full), scale=MSE, direction="forward")
+  
+    - Set trace = FALSE will output the final selected model only. 
+    
+  - Pros
+    - Uses smaller models early
+    - Less susceptible to multicolinearity
+    - Shows the most important predictors
+  
+  - Cons
+    - Need to consider more models
+    - Predictor entered earlier may become redundant later.
+
+> Stepwise Regression
+
+  - Alternate forward selection and backward elimination 
+  - Choose new significant predictors using forward selection
+  - Drop redundant predictors using backward elimination
+
+Notes: Global basis model is the one chosen from all subsets. 
+
+## 10/17  Effects of Categorical Variable
+
+> Two sample T-test (when only categorical predictors):
+  
+  - null hypothesis: the mean between the two groups is the same
+  
+  - The result got from two sample t tests contains variations from other predictors and didn't take into consideration
+
+> When given numerical and categorical
+
+  - Interpretations for slope: takes consideration for all predictors in the model.
+  - Interaction: not linear
+  - <span style="color: red;"> Must use factor() in lm() </span>
+  
+> Test for two regression lines 
+
+  - different slope ($\beta_3 * interaction = 0$)
+  
+  - different intercept ($\beta_2 * Indicator = 0$)
+    - indicator: categorical
+    
+  different lines ($\beta_2 = \beta_3 = 0$)
+
+
+## 10/26 Polynomial Regression
+
+> For a single predictor X:
+ 
+ - $y = \beta_0 + \beta_1 X + ... + \beta_p X ^p + error$
+ 
+  - p = 0, linear
+  - p = 1, quadratic
+  - p = 2, cubic
+  
+> Three way to write polynomials
+
+  - construct new columns to square the predictors
+  
+  - I(), shortcut for creating new variables
+  
+    - lm(data, response ~ predictor + I(predictor ^ 2))
+    
+  - poly(predictor, degree = 2, raw = TRUE)
+  
+  
+  - Method 2 and 3 don't require new variables
+  
+    - Even though the output is the same the anova table for the two models will be different. 
+    
+    - R will treat I() as multiple regression with two predictors and analyze the cumulative model predictions
+    
+    - poly() will be treated and calculated using nest F statistics. 
+    
+    
+> Second Order (for two predictors)
+
+  - At least one of $X_1 ^2 or X_2^2 or X_1 * X_2$
+  
+  - Check for redundancies (nested F statistics)
+    - Interaction effect
+    - All second order terms
+    - All terms involving second predictor
+    
+## 10/31 Other topics in regression
+
+> Overfitting
+
+  - Occur when degree of the polynomial is too high
+  
+  - May reflect the structure of a particular sample, but not generalize the data. 
+
+> Detect Overfitting
+
+  - Cross Validation
+  
+    - Training sample to build the model
+    - Testing sample to detect overfitting
+    - always use set.seed() [to ensure that we get same result from randomization]
+    - predict(model from training,newdata = testing dataset)
+    
+  - factor(), convert variables coded as level numbers back to categorical. 
+    
+    
+## Reading for Midterm 2
+
+1. all coefficients from multiple linear regression chooses estimate that minimize the sum of squared residuals
+
+2. $R^2$
+  - is the squared correlation between the response and predicted response in multiple regression
+  - is the squared correlation between the response and the predictor in SLR since there is only one predictor.
+  - is the proportion of variation explained by the linear model.
+  
+3. Multiple Regression
+
+  - Indicator: categorical variables with values 0/1.
+  
+  - full interaction model: A + B + AB
+    - Interactions are not limited to between categorical and numerical variables.
+    
+4. Model Selection
+  
+  - Full model Mellow's Cp = k + 1
+  
+  - look for small Cp and large adjusted R ^ 2 when selecting models
+  
+5. Cross Validation
+
+  - Cross-Validation correlation: the correlation between these predictions and the actual values for the holdout sample
+  
+  - shrinkage: the difference between the $R^2$ for the training sample and the square of the cross-validation.
+
+6. Detecting unusual points
+
+  - sum of leverages in multiple regression is k + 1
+    - Typical value = $(k +1)/n$
+    - mild if $>2(k+1)/n$ and extreme if $>3(k+1)/n$
+    
+  - tail(sort(hatvalues(mod))): the largest certain numbers of hatvalues. 
+
+## 11/07 Class 17 ANOVA for means
+
+> ANOVA for differnce in K Means 
+
+  -  Null hypothesis: all means are the same.
+    - n, $\bar{y}, s_y$ (sample size, overall mean and standard deviation)
+  - Compare SSTotal and SSE. 
+  
+  - y = mean + error
+    - SSTotal = SSGroup + SSE
+    - SSGroup: sum of[ (difference between mean of each and overall mean) ^ 2 * sample size (number of observations in this group)]
+    - SSTotal = sum of (observed - mean) ^ 2
+    - SSE: (each data -  mean) ^ 2
+    
+  - aov() for testing group means 
+  
+> Checking conditions for ANOVA
+
+  - Zero Mean: Always hold
+  - Constant Variance
+  - Normality: QQ plot
+  - Independence: Check when collect data
+  - Linearity
+
+> Multiple Comparisons
+
+  - If the p-value for the anova test for means, we need multiple comparisons to identify which one. (n choose 2 ways)
+  
+
+## 11/09 Class 18 Variacne Modeling and Multiple Testing 
+
+- Categorical Predictors doesn't require checking linearity. 
+
+> Least Significance Difference(LSD)
+
+  - Used to detect which group is significant.
+  
+  - Equivalent with CI (half of CI to test for significance)
+  
+  - When comparing two groups, suppose group A has 5 observations and group B has 4 observations, 
+  
+    LSD = t_LSD * sqrt(MSE)*sqrt(1/4 + 1/5),
+    
+    t_LSD = qt(1 - 0.05/2, modS$df.residual)
+    
+      - df.residual = degree freedom of residuals with 0.05 significance level. 
+      
+    MSE(Mean sqaured error) = summary(modS)[[1]][,3][2] 
+    
+  - But errors are high, thus only use them when doing 1 test.(two group means)
+
+  - pairwise.t.test(Exams4$Grade, Exams4$Student, p.adj = 'none')
+
+   
+> Bonferroni Significance difference (BSD, universal way for more complicated test)
+
+  - Bonferroni t-quantile:
+    - qt(1 - 0.05/10/2, modS$df.residual) (divide the significance level 0.05 by the number of tests.)
+  
+  - BSD = t_bf * sqrt(MSE)*sqrt(1/4 + 1/4) 
+    - in the square root, the sample sizes for the two groups. 
+  
+  - pairwise.t.test(Exams4$Grade, Exams4$Student, p.adj = 'bonf')
+  
+> Honestly SIgnificant difference (HSD, most optimal way for anova multiple test for significance)
+
+  - HSD = qtukey(1-0.05, k, modS$df.residual = n-k)/sqrt(2)* sqrt(MSE)*sqrt(1/4 + 1/4) 
+  - for all SDs, if the absolute value difference between two groups means is greater than the SD, then reject it. (Group means are different)
+    
+  - TukeyHSD(modS) 
+    - significant predictor doesn't contain 0 in the confidence interval. 
+
+> Simple Block Design
+  
+  - Has two factors with one data value in each combination.
+  
+    - A with k levels, B with J levels. 
+    
+    - n = K * J
+    
+    - use when no interaction effect
+    
+    - aov(Grade~factor(Exam)+factor(Student), data=Exams4)
+  
+## 11/14 Class 19 Two Way ANOVA
+
+> Interaction Effect
+
+  - When significant difference is present at a specific combination
+
+> Factorial Design
+
+  - Use to estimate interaction effect
+  
+  - require more than one data in each combination
+  
+  - c > 1 for balanced factorial design.
+    - c = 1 for randomized block design.
+  
+    - Only consider constant C in this course.
+  
+  - $n_kj = c$ (sample size in the kj cell.)
+  
+  - Order doesn't matter
+
+> ANOVA for categorical + interaction effect
+
+  - aov(Force ~ Thickness + Type + Thickness*Type, data=Glue)
+  
+  - interaction.plot(Glue$Type, Glue$Thickness, Glue$Force)
+  
+    - Further identify spefic factors that drive significant interaction effect
+
+> Checking ANOVA Conditions (constant variance)
+
+  - tapply(Exams4$Grade, Exams4$Student, median) 
+  
+  - Use Levene test: leveneTest(log(CancerSurvival$Survival), CancerSurvival$Organ)
+  
+    - If p-value is not significant, then variance is constant.
+  
+  - Transform data to resolve non-constant variance
+    
+
+## 11/16 Class 20: Logistic Regression 
+    
+    
+> Three ways of categorical regression
+
+  - Binary(dummy variables, 0/1)
+    - Focus for logistic regression
+    
+  - Ordinal: Natural orders between each section
+  
+  - Nominal: No natural orders
+  
+  - jitter(), illustrate clear density when the points are around 1 point. 
+  
+  - binary regression model focuses on the probability of success(pi),
+  
+    - Predictors vs Proportion of success. 
+    
+    - pi is between 0 and 1
+  
+  - glm(. family = binomial)
+  
+  - $\beta_0 + \beta_1x = log(pi/(1-pi)) = log(odds)$
+  
+    - $\beta_0$ : logit probability when x = 0
+    
+      - log Odds when x = 0
+    
+    - $\beta_1$; logit change when x increase by one unit. 
+    
+      - Change in log odds per unit change in X
+      
+      - The odds increase by a multiplicative factor of (odds ratio pi)/ e^(beta_1)
+> Predict 
+
+  - predict.lm(interval) [confidence / prediction interval]
+  
+  - predict(mod_18, data, type = "response") [logistic prediction]
+  
+> Odds
+
+  - Odds: probability of winning / probability of loss.
+  
+    - pi / (1 - pi)
+    
+##  11/21 Class 21
+
+> Fit p-hat and pi-hat
+
+  - Raw fitting line
+  
+    - plot(jitter(Made,amount=0.1)~Length,data=Putts1)
+      curve(exp(B0+B1*x)/(1+exp(B0+B1*x)),add=TRUE, col="red")
+      
+    - p-hat: as.vector(Putts.table[2,]/colSums(Putts.table))
+    
+    - pi-hat: 
+      sigmoid = function(B0, B1, x)
+    {
+      exp(B0+B1*x)/(1+exp(B0+B1*x))
+      }
+      
+      - sigmoid(B0, B1, c(3:7))
+
+> Odds Ratio
+
+  - p-hat will fluctuate
+  
+  - pi-hat stays constant
+  
+  - odd1/odd2
+  
+> Inference 
+
+  - CI: beta_1 +/- z* SE. (Confidence Interval for Slope)
+    - If doesn't contain 0, then CI is significant. 
+  
+    - Exponentiation to get Confidence Interval for Odds Ratio.
+      - If doesn't contain 1, the CI is significant. 
+  
+  (z distribution/ t distribution)
+  
+  
+## 11/28 Class 22 Logistic Inference
+
+> likelihood
+
+  - product( pi_hat ^ yi * (1-pi_hat)^(1-yi))
+  
+    - Pi_hat: probability for success for yi = 1
+     
+  - Test for overall fit
+  
+    - null hypothesis: beta_1 = 0, L = overall probability
+    
+    - Alternate: beta_1 != 0, L = product of individual
+    
+    - Null deviance/ logistic form of sum squared total 
+      - -2log(L_null) 
+      
+    - Residual deviance
+      - -2log(L_alternate)
+    
+    - Check for improvement(G statistics):
+      - null deviance - residual deviance
+      
+      - Null always larger than residual, the large the difference, the better model. 
+      
+      - summary(modPutt)$null.deviance - summary(modPutt)$deviance
+      
+      - 1 - pchisq(G,1) (right tail p-value, degree of freedom = number of predictors)
+      
+        - If close to 0, reject null. 
+        
+    - Alternate way: anova(modPutt, test="Chisq")
+
+> Categoircal in predictors and response
+
+  - factor(): dummy predictors 
+  
+> Nested Likelihood Ratio Test
+
+  - Null: beta_3,4,5 = 0. 
+  
+  - -2log(L_reduce_default) - (-2log(L_full_default))
+  
+    - Drop-in-deviance: 
+    
+      - G.emergency=summary(reduced)$deviance - summary(Full)$deviance
+    
+      - 1 - pchisq(G.emergency, 1)
+      
+## 11/30 Logistic Model Selection
+
+ > Best GLM
+ 
+  - reorganize dataset so that the response variable is placed in the last column, and remove all variables that will not be used in the prediction. 
+  
+  - bestglm(dataset, family=binomial)
+  
+  - Pick the best model by selecting the small BIC(Bayesian Information Criteria)
+    - klog(n) - 2log(L(0))
+    
+      - k: number of predictors
+      - n: sample size
+      - 0: all predictors
+      
+  - If BIC difference within 2, use either. If greate than 2, use the smaller one. 
+      
